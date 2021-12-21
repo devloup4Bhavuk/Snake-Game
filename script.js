@@ -1,8 +1,10 @@
 import Snake from "./snake.js";
 import Food from "./food.js";
 import pen,{canvas} from "./canvas.js";
-
+import display from "./gameover.js";
 init()
+
+let score = 0;
 
 const mySnake = new Snake()
 mySnake.addBody()
@@ -23,17 +25,23 @@ function init(){
 
 function gameloop(){
     if(gameOver()){
-        alert("Game Over");
+        display(score);
         clearInterval(interval)
         return
     }
     if(myFood.foodEaten(mySnake.body[0].x,mySnake.body[0].y)){
         myFood.updateFood()
         myFood.generatFood()
+        score++;
+        pen.clearRect(0,0,canvas.height,canvas.width)
+        mySnake.updatePosition(true);
+        myFood.generatFood()
     }
-    pen.clearRect(0,0,canvas.height,canvas.width)
-    mySnake.updatePosition();
-    myFood.generatFood()
+    else{
+        pen.clearRect(0,0,canvas.height,canvas.width)
+        mySnake.updatePosition();
+        myFood.generatFood()
+    }
 }
 
 function gameOver(){
